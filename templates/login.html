@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | Facelogix</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body
+    style="
+      margin: 0;
+      font-family: 'Rubik', sans-serif;
+      background: #f5f7fa;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    "
+  >
+    <div
+      style="
+        width: 90%;
+        max-width: 1000px;
+        background: #fff;
+        display: flex;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <!-- Left Side (Illustration) -->
+      <div
+        style="
+          flex: 1;
+          background: #eef2f7;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        <img
+          src="{{ url_for('static', filename='admin_logo.png') }}"
+          alt="Admin Logo"
+          style="max-width: 80%; height: auto"
+        />
+      </div>
+
+      <!-- Right Side (Form) -->
+      <div style="flex: 1; padding: 50px 40px">
+        <h2 style="font-weight: 600; margin-bottom: 25px; text-align: center">
+          Login as an Admin User
+        </h2>
+        {% if error %}
+        <div
+          style="
+            color: red;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: 500;
+          "
+        >
+          {{ error }}
+        </div>
+        {% endif %}
+        <form method="POST">
+          <div style="margin-bottom: 20px">
+            <label for="username" style="display: block; margin-bottom: 5px"
+              >Username</label
+            >
+            <input
+              type="text"
+              id="username"
+              name="username"
+              required
+              style="
+                width: 100%;
+                padding: 12px 40px 12px 15px; /* space on right for icon */
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 15px;
+                box-sizing: border-box;
+              "
+            />
+          </div>
+          <div style="position: relative; margin-bottom: 20px">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              style="
+                width: 100%;
+                padding: 12px 40px 12px 15px; /* space on right for icon */
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 15px;
+                box-sizing: border-box;
+              "
+            />
+            <i
+              class="fa-solid fa-eye"
+              id="togglePassword"
+              style="
+                position: absolute;
+                top: 63%;
+                right: 12px;
+                transform: translateY(-50%);
+                cursor: pointer;
+                color: #555;
+              "
+            ></i>
+          </div>
+
+          <!-- Normal LOGIN button -->
+          <button
+            id="loginBtn"
+            type="submit"
+            style="
+              width: 100%;
+              padding: 12px;
+              border: none;
+              border-radius: 25px;
+              background: linear-gradient(to right, #6a11cb, #2575fc);
+              color: white;
+              font-weight: 600;
+              font-size: 16px;
+              cursor: pointer;
+            "
+          >
+            LOGIN
+          </button>
+
+          <!-- Loading button with spinner -->
+          <button
+            id="loadingBtn"
+            type="button"
+            disabled
+            style="
+              display: none;
+              width: 100%;
+              padding: 12px;
+              border: none;
+              border-radius: 25px;
+              background: linear-gradient(to right, #6a11cb, #2575fc);
+              color: white;
+              font-weight: 600;
+              font-size: 16px;
+              cursor: not-allowed;
+            "
+          >
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              style="margin-right: 10px"
+            ></span>
+            Logging in...
+          </button>
+
+          <div style="margin-top: 20px; text-align: center; font-size: 14px">
+            <a
+              href="#"
+              onclick="showPopup()"
+              style="color: #6a11cb; text-decoration: none"
+            >
+              Forgot your password? </a
+            ><br />
+            <a
+              href="#"
+              onclick="showPopup()"
+              style="color: #6a11cb; text-decoration: none"
+            >
+              Get help signing in.
+            </a>
+          </div>
+
+          <p
+            style="
+              margin-top: 30px;
+              text-align: center;
+              font-size: 12px;
+              color: #aaa;
+            "
+          >
+            <a
+              href="{{ url_for('terms') }}"
+              style="color: #6a11cb; text-decoration: none"
+              >Terms of use. Privacy policy</a
+            >
+          </p>
+        </form>
+      </div>
+    </div>
+    <!-- Popup Modal -->
+    <div
+      id="popupModal"
+      style="
+        display: none;
+        position: fixed;
+        z-index: 999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        animation: fadeIn 0.3s ease;
+      "
+    >
+      <div
+        id="popupContent"
+        style="
+          background: white;
+          padding: 30px;
+          border-radius: 12px;
+          max-width: 400px;
+          width: 90%;
+          text-align: center;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+          transform: scale(0.8);
+          opacity: 0;
+          animation: scaleIn 0.3s forwards;
+        "
+      >
+        <h3 style="margin-bottom: 10px">Need Help?</h3>
+        <p style="font-size: 14px; margin-bottom: 20px">
+          Contact administrator at:<br />
+          <strong>+91 9988776655</strong><br />
+          <strong>admin@gmail.com</strong>
+        </p>
+        <button
+          onclick="closePopup()"
+          style="
+            padding: 8px 20px;
+            background: #6a11cb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+          "
+          onmouseover="this.style.background='#2575fc'"
+          onmouseout="this.style.background='#6a11cb'"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+
+    <!-- Animations -->
+    <style>
+      @keyframes fadeIn {
+        from {
+          background-color: rgba(0, 0, 0, 0);
+        }
+        to {
+          background-color: rgba(0, 0, 0, 0.5);
+        }
+      }
+
+      @keyframes scaleIn {
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+    </style>
+
+    <script>
+      document.querySelector("form").addEventListener("submit", function (e) {
+        e.preventDefault(); // Prevent real submit for demo
+        document.getElementById("loginBtn").style.display = "none";
+        document.getElementById("loadingBtn").style.display = "block";
+
+        setTimeout(() => {
+          // Simulate form submission after 3 seconds
+          this.submit();
+        }, 2000);
+      });
+      window.addEventListener("pageshow", function () {
+        // This runs when page is loaded from back/forward navigation
+        document.getElementById("loginBtn").style.display = "block";
+        document.getElementById("loadingBtn").style.display = "none";
+      });
+
+      const togglePassword = document.getElementById("togglePassword");
+      const passwordInput = document.getElementById("password");
+
+      togglePassword.addEventListener("click", () => {
+        const isPassword = passwordInput.type === "password";
+        passwordInput.type = isPassword ? "text" : "password";
+
+        togglePassword.classList.toggle("fa-eye");
+        togglePassword.classList.toggle("fa-eye-slash");
+      });
+
+      function showPopup() {
+        const popup = document.getElementById("popupModal");
+        const content = document.getElementById("popupContent");
+        popup.style.display = "flex";
+        // Restart animation
+        content.style.animation = "none";
+        setTimeout(() => {
+          content.style.animation = "scaleIn 0.3s forwards";
+        }, 10);
+      }
+
+      function closePopup() {
+        document.getElementById("popupModal").style.display = "none";
+      }
+    </script>
+  </body>
+</html>
