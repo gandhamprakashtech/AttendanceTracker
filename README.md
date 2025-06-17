@@ -6,7 +6,8 @@ An advanced, user-friendly **Attendance Management System** that uses **Face Rec
 
 ## 🔐 Admin Login Interface
 
-![Admin Login](./7d0241a3-72ba-4db0-afe4-21af85130b3d.png)
+<img width="918" alt="image" src="https://github.com/user-attachments/assets/3ab6bae2-b04d-4945-a0cd-4dc435c8f9cd" />
+
 
 The admin can securely log in using a username and password to access the system dashboard.
 
@@ -14,7 +15,8 @@ The admin can securely log in using a username and password to access the system
 
 ## 📋 Dashboard - Manage System
 
-![Dashboard](./e6ce5e44-6436-4df4-9197-e63dcaffea86.png)
+<img width="960" alt="image" src="https://github.com/user-attachments/assets/bee85ba6-88c4-46cf-8f32-d6cd1c0eb61c" />
+
 
 Once logged in, the admin can:
 - 👤 Register new users (students)
