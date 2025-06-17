@@ -1,1 +1,1 @@
-# face_recognition_flask
+#Attendance Tracker Application using face recognition
